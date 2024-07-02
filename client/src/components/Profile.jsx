@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import Loading from './Loading';
 import { fetchData } from '../api/backend';
 
 const Profile = () => {
     const [users, setUsers] = useState([]);
     const [errMsg, setErrMsg] = useState('');
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -13,6 +15,8 @@ const Profile = () => {
                 setUsers(response.payload);
             } catch (error) {
                 setErrMsg(error.message);
+            } finally {
+                setLoading(false);
             }
         };
         fetchUsers();
@@ -21,6 +25,10 @@ const Profile = () => {
     useEffect(() => {
         console.log('Users state updated:', users); // Log users whenever it changes
     }, [users]);
+
+    if (loading) {
+        return <Loading />; // Render loading component while loading
+    }
 
     return (
         <div>

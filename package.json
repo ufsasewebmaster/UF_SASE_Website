@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-filler
-=======
 {
   "dependencies": {
     "react-router-dom": "^6.24.0"
   }
 }
->>>>>>> sprint-0

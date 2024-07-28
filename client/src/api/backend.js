@@ -11,28 +11,45 @@ export const axiosPrivate = axios.create({
   withCredentials: true,
 });
 
+
+// Success: "data": { ... }, "message": "..."
+// Error: "error": { "code": ..., } "message": "..."
+
 export const fetchData = async (endpoint) => {
   try {
     const response = await axiosPrivate.get(endpoint);
-    if (response?.data?.payload) {
-      return response.data;
+    if (response.data) {
+      const { data, message } = response.data;
+      return { data, message };
     }
-    throw new Error({ errCode: response?.data?.errCode, errMsg: response?.data?.errMsg });
+    throw new Error(JSON.stringify({ code: 'UNEXPECTED_RESPONSE', message: 'Unexpected response format' }));
   } catch (err) {
-    throw new Error({ errCode: err?.response?.data?.errCode, errMsg: err?.response?.data?.errMsg });
+    if (err.response && err.response.data && err.response.data.error) {
+      throw new Error(JSON.stringify({ code: err.response.data.error.code, message: err.response.data.message }));
+    } else {
+      throw new Error(JSON.stringify({ code: 'UNKNOWN_ERROR', message: err.message }));
+    }
   }
 };
+
 
 export const postData = async (endpoint, data) => {
   try {
     const response = await axiosPrivate.post(endpoint, data);
-    if (response?.data?.payload) {
-      return response.data;
+    if (response.data) {
+      const { data, message } = response.data;
+      return { data, message };
     }
-    throw new Error({ errCode: response?.data?.errCode, errMsg: response?.data?.errMsg });
+    throw new Error(JSON.stringify({ code: 'UNEXPECTED_RESPONSE', message: 'Unexpected response format' }));
   } catch (err) {
-    throw new Error({ errCode: err?.response?.data?.errCode, errMsg: err?.response?.data?.errMsg });
+    if (err.response && err.response.data && err.response.data.error) {
+      throw new Error(JSON.stringify({ code: err.response.data.error.code, message: err.response.data.message }));
+    } else {
+      throw new Error(JSON.stringify({ code: 'UNKNOWN_ERROR', message: err.message }));
+    }
   }
 };
+
+
 
 export default axiosInstance;

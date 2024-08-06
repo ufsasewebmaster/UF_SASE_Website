@@ -12,18 +12,18 @@
 }
 
 .boxes {
+  font-size: 14px;
   background-color: #f5f4f2;
   border-radius: 3px;
   border-color: silver;
   border-width: 1px;
-  font-size: 14px;
 }
 
 #container {
   overflow: hidden;
 }
 
-#logo_container {
+#logo-container {
   float: left;
   width: 50%;
   text-align: center;
@@ -37,9 +37,9 @@
 }
 
 #title {
+  padding-bottom: 50px;
   text-align: center;
   font-size: 50px;
-  padding-bottom: 50px;
 }
 
 #name {

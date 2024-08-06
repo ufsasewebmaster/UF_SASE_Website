@@ -12,10 +12,17 @@ import usersRouter from './routes/users.mjs';
 const app = express();
 const port = process.env.PORT || 5000;
 
+// Serve static files from the React app (if applicable)
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api/')) return next();
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
+
 app.use(cors({
   origin: 'http://localhost:8000', // Frontend URL
   credentials: true, // Allow credentials
 }));
+
 
 // Middleware
 app.use(logger);

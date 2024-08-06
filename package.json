@@ -1,18 +1,11 @@
 {
   "name": "uf-sase-website",
   "version": "1.0.0",
-  "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "serve": "vite preview"
-  },
-  "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.24.0"
-  },
-  "devDependencies": {
-    "vite": "^5.3.4"
+    "client-install": "cd client && npm install",
+    "client-build": "cd client && npm run build",
+    "server-install": "cd server && npm install",
+    "start": "cd server && npm start",
+    "heroku-postbuild": "npm run client-install && npm run client-build && npm run server-install"
   }
 }

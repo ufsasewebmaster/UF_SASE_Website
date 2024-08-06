@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import path from 'path';
 import cors from 'cors';
+import { fileURLToPath } from 'url';
 
 // Middleware
 import logger from './middleware/logger.mjs';
@@ -11,28 +12,30 @@ import usersRouter from './routes/users.mjs';
 
 const app = express();
 const port = process.env.PORT || 5000;
-
-// Serve static files from the React app (if applicable)
-app.use((req, res, next) => {
-  if (req.path.startsWith('/api/')) return next();
-  res.sendFile(path.join(__dirname, '../client/build/index.html'));
-});
-
-app.use(cors({
-  origin: 'http://localhost:8000', // Frontend URL
-  credentials: true, // Allow credentials
-}));
-
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Middleware
 app.use(logger);
 app.use(express.json());
 
+// CORS configuration
+app.use(cors({
+  origin: 'http://localhost:8000', // Frontend URL
+  credentials: true, // Allow credentials
+}));
+
 // Routes
 app.use('/api/users', usersRouter);
 
-// Serve static files from the React app (if applicable)
-// app.use(express.static(path.join(__dirname, 'client/build')));
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// 404 Handler
 app.use((req, res, next) => {
   res.status(404).json({ message: 'Page not found' });
 });

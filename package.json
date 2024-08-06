@@ -7,5 +7,8 @@
     "server-install": "cd server && npm install",
     "start": "cd server && npm start",
     "heroku-postbuild": "npm run client-install && npm run client-build && npm run server-install"
+  },
+  "engines": {
+    "node": "14.x"
   }
 }
